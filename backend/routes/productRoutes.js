@@ -1,5 +1,5 @@
 const productsData = require('../data/products')
-const Product = require('../Schema/productSchema')
+const Product = require('../schema/productSchema')
 const express = require("express");
 const app = express.Router();
 const asyncHandler = require('express-async-handler')

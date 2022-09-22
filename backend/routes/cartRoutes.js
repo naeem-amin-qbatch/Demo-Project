@@ -1,73 +1,48 @@
-const Cart = require('../Schema/cartSchema')
+const Cart = require('../schema/cartSchema')
 const express = require("express");
 const app = express.Router();
 const asyncHandler = require('express-async-handler')
-const cartData = require('../data/cart');
-const Product = require('../Schema/productSchema');
-
-// Create cart into database
-app.post("/create", async (req, res) => {
-  const data = await Cart.insertMany(cartData);
-  if (data)
-    res.send(data);
-  else {
-    res.status(404)
-    throw new Error('Cart Not Created')
-  }
-});
-
+const Product = require('../schema/productSchema');
 
 
 app.post("/add-to-cart", async (req, res) => {
   console.log('req body: ', req.body)
-  //const { productId, quantity, name, price } = req.body;
   const { user, product } = req.body;
   console.log(user, product)
-  const userId = "5de7ffa74fff640a0491bc4f"; //TODO: the logged in user id
-  // get all product details here
-  const productDetails = await Product.findById(product)
-  console.log("productDetails ", productDetails)
-
+  const productDetails = await Product.findById(product) // get all product details here
   try {
-    let cart = ''
-    cart = await Cart.findOne({ userId });
-    console.log("cart: ", cart)
+    const cart = await Cart.findOne({ user }); // check if user already in Cart
     if (cart) {
-      //cart exists for user
-      //  let itemIndex = cart.product.indexOf(p => p.product.toString() == product.toString()); // check product id in cart with product given(clicked)
-      let itemIndex = cart.product
-      console.log("itemIndex: ", itemIndex)
-
-      if(cart.product == product){
-        console.log('found')
-      }else{
-        console.log('not found')
+      // user already in the cart
+      let cart_id = cart._id; // get cart id
+      try {
+        await Cart.updateOne( // update product list
+          { _id: cart_id },
+          { $addToSet: { product: req.body.product } }
+        )
+        return res.status(201).send("Successfully updated");
+      } catch (e) {
+        console.log(e)
       }
-      if (itemIndex > -1) {
-        //product exists in the cart, update the quantity
-        let productItem = cart.products[itemIndex];
-        //productItem.quantity = quantity;
-        // cart.products[itemIndex] = productItem;
-      } else {
-        //product does not exists in cart, add new item
-        cart.products.push({ name, price, image });
+    }
+    else {
+      //no cart for this user, create new cart
+      try {
+        const newCart = await Cart.create({ user, product });
+        console.log('Cart data after createCart api', newCart)
+        return res.status(201).send(newCart);
+      } catch (e) {
+        console.log(e)
       }
-      cart = await cart.save();
-      return res.status(201).send(cart);
-    } else {
-      //no cart for user, create new cart
-      const newCart = await cart.create({
-        //userId,
-        user,
-        //products: [{ productId, quantity, name, price }]
-        product,
-      });
-
-      return res.status(201).send(newCart);
     }
   } catch (err) {
     console.log(err);
-    res.status(500).send("Something went wrong");
+    res.status(404).send("Something went wrong");
   }
 });
+
+
+app.get('/getcart', async (req,res) => {
+
+})
 module.exports = app;

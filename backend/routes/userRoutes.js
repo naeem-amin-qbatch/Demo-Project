@@ -2,13 +2,13 @@ require("dotenv").config();
 
 const { TOKEN_KEY } = process.env;
 const userData = require('../data/user');
-const User = require('../Schema/userSchema');
+const User = require('../schema/userSchema');
 const express = require("express");
 const bcrypt = require('bcryptjs');
 const app = express.Router();
 const asyncHandler = require('express-async-handler');
 const jwt = require('jsonwebtoken');
-const Auth = require('../jwt_auth')
+const Auth = require('../middlewares/jwt_auth')
 // Insert users into database
 app.post("/adduser", asyncHandler(async (req, res) => {
     // console.log(userData);

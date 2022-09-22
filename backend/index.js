@@ -6,7 +6,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-const connectDB = require('./databaseConnection')
+const connectDB = require('./utils/databaseConnection')
 const productRoute = require('./routes/productRoutes')
 const userRoute = require('./routes/userRoutes')
 const cartRoute = require('./routes/cartRoutes')
