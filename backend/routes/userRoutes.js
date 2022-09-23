@@ -9,28 +9,32 @@ const app = express.Router();
 const asyncHandler = require('express-async-handler');
 const jwt = require('jsonwebtoken');
 const Auth = require('../middlewares/jwt_auth')
-// Insert users into database
-app.post("/adduser", asyncHandler(async (req, res) => {
-    // console.log(userData);
-    const newArray = [];
-    for (const item of userData) {
-        let { password } = item;
-        const hashedPassword = await bcrypt.hash(password.toString(), 10);
-        newArray.push({
-            ...item,
-            password: hashedPassword
-        });
-    }
-    // console.log('New Array', newArray);
-    const data = await User.insertMany(newArray, { ordered: false })
-    if (data)
-        res.send(data);
-    else {
-        res.status(404)
-        throw new Error('Users Not Inserted')
-    }
-}));
 
+// Insert users into database
+app.post("/adduser", async (req, res) => {
+    const { name, email, phone, password } = req.body;
+    const foundUser = await User.findOne({ email: email })
+    if (foundUser) {
+        res.send({ message: 'User Already Exist' })
+    } else {
+        const hashedPassword = await bcrypt.hash(password.toString(), 10);
+        const user = new User({
+            name,
+            email,
+            phone,
+            password: hashedPassword,
+        })
+        console.log("password: ", password)
+        user.save(err => {
+            if (err) {
+                console.log('already in db')
+                res.send(err)
+            } else {
+                res.send({ message: "successful registered" })
+            }
+        })
+    }
+});
 
 // Login route
 app.post('/login', async (req, res) => {
@@ -38,14 +42,10 @@ app.post('/login', async (req, res) => {
         const { email, password } = req.body;
         console.log('email: ', email)
         console.log('password: ', password)
-        // Validate user input
-        if (!(email && password)) {
-            res.status(404).send("All input is required");
-        }
         // Validate if user exist in our database
         const user = await User.findOne({ email });
         console.log('user from DB', user);
-        if (user && (bcrypt.compare(password, user.password))) {
+        if (user && await (bcrypt.compare(password, user.password))) {
             // Create token
             const token = jwt.sign(
                 { user_id: user._id, email },
@@ -57,8 +57,7 @@ app.post('/login', async (req, res) => {
             // save user token
             user.token = token;
             console.log('user.token', user.token);
-            // user
-            return res.status(200).json(user);
+            return res.status(200).json(user); // user
         }
         res.status(400).send("Invalid Credentials");
     } catch (err) {
@@ -67,21 +66,20 @@ app.post('/login', async (req, res) => {
 })
 
 app.post('/getuser', Auth, async (req, res) => {
-        res.status(200).send("Welcome 🙌 ");
-
- })
+    res.status(200).send("Welcome 🙌 ");
+})
 
 
 // get all users
-app.get('/all',async (req,res) => {
-const data = await User.find({})
-if(data){
-    console.log(data);
-    res.send(data)
-}else{
-    res.status(404)
-    throw new Error('Users Not Found')
-}
+app.get('/all', async (req, res) => {
+    const data = await User.find({})
+    if (data) {
+        console.log(data);
+        res.send(data)
+    } else {
+        res.status(404)
+        throw new Error('Users Not Found')
+    }
 })
 
 
@@ -89,10 +87,10 @@ if(data){
 app.get('/:id', Auth, asyncHandler(async (req, res) => {
     const data = await User.findById(req.params.id);
     if (data) {
-      res.send(data);
+        res.send(data);
     } else {
-      res.status(404);
-      throw new Error("Product Not Found");
+        res.status(404);
+        throw new Error("Product Not Found");
     }
-  }))
+}))
 module.exports = app;
