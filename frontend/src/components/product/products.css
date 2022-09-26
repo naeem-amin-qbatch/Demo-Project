@@ -1,0 +1,18 @@
+.img{
+    width: 500px;
+    height: 500px;
+}
+.productCard{
+width: 14vmax;
+display: flex;
+flex-direction: column;
+text-decoration: none;
+color: rgb(48, 48, 48);
+margin: 2vmax;
+transition: all 0.5s;
+padding-bottom: 0.5vmax;
+}
+
+.productCard > img {
+    width: 14vmax;
+  }

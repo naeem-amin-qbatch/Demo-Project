@@ -1,62 +1,103 @@
-import React, { useState } from "react"
+import React from "react"
 import './sign-up.css'
 import axios from 'axios'
-
+import { useForm } from "react-hook-form";
+import registerOptions from "./sign-up-validations";
+import { useHistory } from "react-router-dom"
 
 const Register = () => {
-const [user, setUser] = useState({
-    name:'',
-    email:'',
-    phone:'',
-    password:'',
-})
+    const history = useHistory();
+    const { register, handleSubmit, formState: { errors } } = useForm();
 
-    const handleChange = (e) => {
-     const { name,value } = e.target;
-     setUser({
-       ...user,
-       [name]: value,
-     })
-    }
-
-    const register = (e) => {
-        console.log('register btn clivked', e)
-        e.preventDefault();
-        const { name, email, phone, password } = user;
-        if( name && email && phone && password ){
-            axios.post('http://localhost:3000/users/adduser',user).then(res => console.log(res) )
-        }else{
-         console.log('Invalid')
+    const handleFormSubmit = (data) => {
+            axios.post('http://localhost:3000/users/adduser', data)
+                .then(res => history.push('/login'))
+                .catch(e => alert('Invalid details'))
         }
-    }
     return (
+        <div className='center-signup d-flex justify-content-center align-items-center'>
         <div className="register">
-            <form className="">
-                <div className="bg-primary rounded">
-                <h2 className="text-center text-white pt-1 pb-1">Register</h2>
+            <form onSubmit={handleSubmit(handleFormSubmit)}>
+                <div>
+                    <h2 className="text-center fw-bold ">Register</h2>
                 </div>
                 <div className="mb-3">
-                    <label for="exampleInputEmail1">Name</label>
-                    <input type="name" name="name" value={user.name} className="form-control" id="inputName" aria-describedby="emailHelp" placeholder="Please Enter Your Name" onChange={handleChange}/>
-                </div>
-                <div className="mb-3">
-                    <label for="exampleInputEmail1">Email</label>
-                    <input type="email" name="email" value={user.email} className="form-control" id="inputEmail" aria-describedby="emailHelp" placeholder="Please Enter Your Email" onChange={handleChange}/>
-                </div>
-                <div className="mb-3">
-                    <label for="exampleInputEmail1">Phone no</label>
-                    <input type="phone" name="phone" value={user.phone} className="form-control" id="inputPhoneNo" aria-describedby="emailHelp" placeholder="Please Enter Your Phone" onChange={handleChange}/>
-                </div>
-                <div className="mb-3">
-                    <label for="exampleInputPassword1">Password</label>
-                    <input type="password" name="password" value={user.password} className="form-control" id="inputPassword" placeholder="Please Enter Your Password" onChange={handleChange}/>
-                </div>
-                <div className="text-center">
-                    <button className="btn btn-outline-primary ps-4 pe-4" onClick={(e) => register(e)}>Register</button>
-                </div>
-                <a href="/login" className="link-primary d-flex justify-content-end" ><small>Already have account</small></a>
+                    <label htmlFor="nameInput">Name</label>
+                    <input type="text"
+                     name="name" {...register('name', registerOptions.name)}
+                     className="form-control"
+                      id="inputName" 
+                      placeholder="Please Enter Your Name" />
+                    <small className="text-danger">
+                        {errors.name?.type === "required" && (
+                            <span>Name is required</span>
+                        )}
+                        {errors.name?.type === "pattern" && (
+                            <span>Please enter only alphabets</span>
+                        )}
+                        {errors.name?.type === "minLength" && (
+                            <span>Please enter atleast 4 alphabets</span>
+                        )}
+                        {errors.name?.type === "maxLength" && (
+                            <span>Nmae should be less then 15 characters</span>
 
+                        )}
+                    </small>
+                </div>
+                <div className="mb-3">
+                    <label htmlFor="emailInput">Email</label>
+                    <input type="text" 
+                    name="email" {...register('email', registerOptions.email)} 
+                    className="form-control"
+                     id="inputEmail" 
+                     placeholder="Please Enter Your Email" />
+                    <small className="text-danger">
+                        {errors.email?.type === "required" && (
+                            <span>Eamil is required</span>
+                        )}
+                        {errors.email?.type === "pattern" && (
+                            <span>Please enter valid email address</span>
+                        )}
+                    </small>
+                </div>
+                <div className="mb-3">
+                    <label htmlFor="exampleInputEmail1">Phone no</label>
+                    <input type="phone" 
+                    name="phone" {...register('phone', registerOptions.phone)} 
+                    className="form-control"
+                     id="inputPhoneNo"
+                      placeholder="Please Enter Your Phone" />
+                    <small className="text-danger">
+                        {errors.phone?.type === "required" && (
+                            <span>Phone no is required</span>
+                        )}
+                        {errors.phone?.type === "pattern" && (
+                            <span>Please enter valid phone number</span>
+                        )}
+                    </small>
+                </div>
+                <div className="mb-3">
+                    <label htmlFor="exampleInputPassword1">Password</label>
+                    <input type="password"
+                     name="password" {...register('password', registerOptions.password)}
+                      className="form-control"
+                       id="inputPassword" 
+                       placeholder="Please Enter Your Password" />
+                    <small className="text-danger">
+                        {errors.password?.type === 'required' && (
+                            <span>Password is required</span>
+                        )}
+                        {errors.password?.type === 'minLength' && (
+                            <span>Please enter atleast 4 characters </span>
+                        )}
+                    </small>
+                </div>
+                <div className="d-grid gap-2">
+                    <button className="btn btn-primary">Register</button>
+                </div>
+                <a href="/login" className="link-primary d-flex justify-content-end mt-2" ><small>Already have account</small></a>
             </form>
+        </div>
         </div>
     )
 }

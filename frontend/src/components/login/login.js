@@ -1,49 +1,61 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import './login.css'
-
 import axios from "axios"
 import { useHistory } from "react-router-dom"
+import { useForm } from "react-hook-form";
+import loginOptions from "./login-validations";
 
 const Login = () => {
     const history = useHistory();
-    const [user, setUser] = useState({
-        email: '',
-        password: '',
-    })
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setUser({
-            ...user,
-            [name]: value,
-        })
-    }
-    const login = (e) => {
-        e.preventDefault();
-        axios.post("http://localhost:3000/users/login", user).then(res =>history.push('/')).catch(e => alert('invalid details'))
-    }
+    const { register, handleSubmit, formState: { errors } } = useForm();
+    const handleRegistration = (data) => {
+        console.log('data', data);
+        axios.post("http://localhost:3000/users/login", data)
+            .then(res => history.push('/'))
+            .catch(e => alert('invalid details'))
 
+    }
     return (
-        <div className="register">
-            {console.log(user)}
-            <form className="">
-                <div className="bg-primary rounded">
-                    <h2 className="text-center text-white pt-1 pb-1">Login</h2>
+        <div className='center d-flex justify-content-center align-items-center'>
+        <div className="login">
+            <form onSubmit={handleSubmit(handleRegistration)}>
+                
+                <div>
+                    <h2 className="text-center fw-bold">Login</h2>
                 </div>
                 <div className="mb-3">
-                    <label for="exampleInputEmail1">Email</label>
-                    <input type="email" name="email" value={user.email} className="form-control" id="inputEmail" aria-describedby="emailHelp" placeholder="Enter email" onChange={handleChange} />
+                    <label htmlFor="exampleInputEmail1">Email</label>
+                    <input type="email"
+                        name="email" {...register('email', loginOptions.email)}
+                        className="form-control"
+                        id="inputEmail"
+                        placeholder="Enter an email" />
+                    <small className="text-danger">
+                        {errors?.email && errors.email.message}
+                    </small>
                 </div>
+
                 <div className="mb-3">
-                    <label for="exampleInputPassword1">Password</label>
-                    <input type="password" name="password" value={user.password} className="form-control" id="inputPassword" placeholder="Password" onChange={handleChange} />
+                    <label htmlFor="exampleInputPassword1">Password</label>
+                    <input type="password"
+                        name="password" {...register('password', loginOptions.password)}
+                        className="form-control"
+                        id="inputPassword"
+                        placeholder="Enter Password" />
+                    <small className="text-danger">
+                        {errors?.password && errors.password.message}
+                    </small>
                 </div>
-                <div className="text-center">
-                    <button type="submit" className="btn btn-outline-primary ps-4 pe-4" onClick={(e) => login(e)}>Login</button>
+
+                <div className="d-grid gap-2">
+                    <button className="btn btn-primary">Login</button>
                 </div>
-                <a href="/signup" className="link-primary d-flex justify-content-end"><small>Create Account</small></a>
+
+                <a href="/signup" className="link-primary d-flex justify-content-end mt-2"><small>Create Account</small></a>
             </form>
         </div>
+        </div>
     )
-}
 
+};
 export default Login
