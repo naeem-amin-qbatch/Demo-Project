@@ -11,7 +11,7 @@ const Login = () => {
     const handleRegistration = (data) => {
         console.log('data', data);
         axios.post("http://localhost:3000/users/login", data)
-            .then(res => history.push('/'))
+            .then(res => history.push('/home'))
             .catch(e => alert('invalid details'))
 
     }

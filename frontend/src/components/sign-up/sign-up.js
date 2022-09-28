@@ -11,7 +11,7 @@ const Register = () => {
 
     const handleFormSubmit = (data) => {
             axios.post('http://localhost:3000/users/adduser', data)
-                .then(res => history.push('/login'))
+                .then(res => history.push('/'))
                 .catch(e => alert('Invalid details'))
         }
     return (
@@ -95,7 +95,7 @@ const Register = () => {
                 <div className="d-grid gap-2">
                     <button className="btn btn-primary">Register</button>
                 </div>
-                <a href="/login" className="link-primary d-flex justify-content-end mt-2" ><small>Already have account</small></a>
+                <a href="/" className="link-primary d-flex justify-content-end mt-2" ><small>Already have account</small></a>
             </form>
         </div>
         </div>
