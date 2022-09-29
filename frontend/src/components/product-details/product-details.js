@@ -5,6 +5,7 @@ import "./product-details.css";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import ReactStars from "react-rating-stars-component";
+import DiscriprionDrawer from "../drawer/drawer";
 import { Link } from 'react-router-dom'
 import { FaArrowCircleRight } from "react-icons/fa";
 

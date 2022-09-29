@@ -3,18 +3,20 @@
     padding: 0;
     clip-path: polygon(0 0, 100% 0, 100% 75%, 0% 100%);
 }
+
 .heading {
     width: 40%;
     height: 100px;
     background: rgb(0, 0, 0, .6);
-     margin-bottom: 200px;
-     margin-left: 160px;
+    position: absolute;
+    top: 60%;
+    left: 50%;
+    transform: translate(-50%, -60%);
 }
 
-hr{
+hr {
     border: 2px solid rgb(0, 21, 255);
     margin-left: auto;
     margin-right: auto;
     width: 15%;
-
 }

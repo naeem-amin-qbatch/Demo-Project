@@ -1,6 +1,7 @@
 import React from "react";
 import NavBar from "../navbar/navbar";
 import Products from "../product/products";
+import DiscriprionDrawer from '../drawer/drawer';
 import axios from "axios";
 import { useState, useEffect } from "react";
 import './home-page.css'
@@ -29,7 +30,7 @@ const HomePage = () => {
             <div>
                 <h2 className="fw-bold text-center mt-5">Products</h2>
                 <hr/>
-                <div className="container d-flex mt-5 flex-wrap justify-content-center">
+                <div className="container d-flex mt-2 flex-wrap justify-content-center">
                     {
                         products && products.map(product => (
                             <Products product={product} />
@@ -37,6 +38,8 @@ const HomePage = () => {
                     }
                 </div>
             </div>
+            <DiscriprionDrawer isOpen={true}/>
+
         </div>
     )
 }

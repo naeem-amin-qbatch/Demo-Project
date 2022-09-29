@@ -1,4 +1,6 @@
 import React from "react"
+import {FaCartPlus} from "react-icons/fa"
+import { Link } from "react-router-dom"
 
 const NavBar = () => {
 
@@ -13,8 +15,8 @@ const NavBar = () => {
           </button>
           <div class="collapse navbar-collapse  justify-content-end me-4" id="navbarNav">
             <ul class="navbar-nav ">
-              <li class="nav-item">
-                <a class="nav-link text-white fw-bold" href="#">Cart</a>
+              <li class="nav-item me-2" >
+               <Link to={'/cart'}><FaCartPlus style={{color:"white", fontSize:"30px"}}/></Link>
               </li>
               <li class="nav-item">
                 <a class="nav-link text-white fw-bold" href="#">Log out</a>

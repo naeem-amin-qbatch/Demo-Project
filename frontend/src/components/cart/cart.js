@@ -1,9 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import NavBar from "../navbar/navbar";
 import './cart.css'
 import pic from '../images/bg.png'
+import { useSelector } from "react-redux"
+import { FaTrashAlt } from "react-icons/fa";
+import { Link } from "react-router-dom";
+
 
 const Cart = () => {
+    const { cart } = useSelector(item => item.cart)
+    console.log("cart: ", cart)
+    const [value, setValue] = useState();
+
     return (
         <>
             <NavBar />
@@ -15,26 +23,50 @@ const Cart = () => {
                     </div>
                 </div>
             </div>
-            <div className="container mt-4">
+            <div className="d-flex justify-content-center fw-bold fs-1 mt-2">Your Cart</div>
+            <div className="container mt-5">
+
                 <div className="row">
-                    <div className="col-8 d-flex justify-content-between">
-                        <div className="decorate col-2">Product</div>
-                        <div className="decorate col-2">Price</div>
-                        <div className="decorate col-2">Qauntity</div>
-                        <div className="decorate col-1">Subtotal</div>
-                        <div className="decorate col-1">Remove</div>
+                    <div className="d-flex justify-content-between">
+                        <div className="col-style col-2"><b>Image</b></div>
+                        <div className="col-style col-2"><b>Name</b></div>
+                        <div className="col-style col-2"><b>Price</b></div>
+                        <div className="col-style col-2"><b>Qauntity</b></div>
+                        <div className="col-style col-1"><b>Subtotal</b></div>
+                        <div className="col-style col-1"><b>Remove</b></div>
                     </div>
-                    <div className="col-4">Summary</div>
+                    <hr className="hrCart" />
                 </div>
-                <div className="row">
-                    <div className="col-8"></div>
-                    <div className="col-4">
-                        <p>Total</p>
-                        <div className="d-grid gap-2 mb-2">
-                            <button className="btn btn-primary">Check Out</button>
+
+                {cart?.map((item) => (
+                    <div className="row">
+                        <div className="d-flex justify-content-between">
+                            <div className="col-style col-2 mt-2 mb-2">
+                                <img className="h-75 w-75" src={item.image} />
+                            </div>
+                            <div className="col-style col-2">{item.name}</div>
+                            <div className="col-style col-2">{item.price}</div>
+                            <div className="col-style col-2 quantity">
+                                <input type="number" name='number' value={value} min="0" max="1000" step="1" onChange={(e) => setValue(e.target.value)} />
+                            </div>
+                            <div className="col-style col-1">Subtotal</div>
+                            <div className="col-style col-1"><Link className="text-danger"><FaTrashAlt /> </Link></div>
+                        </div>
+                        <hr className="hrCart" />
+
+                    </div>
+                ))}
+
+                <div className="row d-flex justify-content-end mt-5">
+                    <div className="col-md-4">
+
+                        <b><p className="d-flex justify-content-center">Summary</p></b>
+                        <hr className="hrCartTotal" />
+                        <h2>Total:</h2>
+                        <div className="d-grid gap-2">
+                            <button className="btn btn-primary">Checkout</button>
                         </div>
                     </div>
-
                 </div>
             </div>
         </>

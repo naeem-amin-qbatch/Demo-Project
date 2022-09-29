@@ -1,10 +1,15 @@
-.decorate {
-    border: 1px solid rgb(0, 0, 0);
-
+.col-style {
     display: flex;
     justify-content: center;
+    align-items: center;
 }
-
+.hrCart{
+    border: rgb(0, 0, 0);
+}
+.hrCartTotal{
+    border: rgb(0, 0, 0);
+    width: 100%;
+}
 .cart-img {
     height: 500px;
 }
