@@ -6,8 +6,10 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "data:insert": "node backend/routes/insertproducts.js",
-    "start": "npx nodemon index.js"
+    "start": "npx nodemon index.js",
+    "type": "module"
   },
+  
   "author": "naeem",
   "license": "ISC",
   "dependencies": {

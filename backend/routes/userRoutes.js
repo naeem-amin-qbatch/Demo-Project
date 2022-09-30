@@ -1,5 +1,4 @@
 require("dotenv").config();
-
 const { TOKEN_KEY } = process.env;
 const userData = require('../data/user');
 const User = require('../schema/userSchema');
