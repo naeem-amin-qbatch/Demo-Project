@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import NavBar from "../navbar/navbar";
 import './cart.css'
-import pic from '../images/bg.png'
+import pic from '../images/cart-bg.png'
 import { useSelector } from "react-redux"
 import { FaTrashAlt } from "react-icons/fa";
 import { Link } from "react-router-dom";
@@ -14,7 +14,7 @@ const Cart = () => {
 
     return (
         <>
-            <NavBar />
+            {/* <NavBar /> */}
             <div className="container-fluid text-white p-0">
                 <div className="cart-img d-flex justify-content-center align-items-center">
                     <img src={pic} className="img-fluid w-100" alt="" />

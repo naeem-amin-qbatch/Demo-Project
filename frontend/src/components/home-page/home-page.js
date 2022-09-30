@@ -5,7 +5,7 @@ import DiscriprionDrawer from '../drawer/drawer';
 import axios from "axios";
 import { useState, useEffect } from "react";
 import './home-page.css'
-import pic from '../images/bg.png'
+import pic from '../images/home-bg.png'
 
 const HomePage = () => {
     const [products, setProducts] = useState([]);
@@ -22,7 +22,7 @@ const HomePage = () => {
         <div >
             <NavBar />
             <div className="container-fluid image text-white">
-                <img src={pic} className="img-fluid w-100 h-100" alt="" />
+                <img src={pic} className="img-fluid img-tag w-100" alt="" />
                 <div className="carousel-caption heading d-flex justify-content-center align-items-center">
                     <h1 className="fw-bold display-1">Ecommerce</h1>
                 </div>
@@ -33,13 +33,12 @@ const HomePage = () => {
                 <div className="container d-flex mt-2 flex-wrap justify-content-center">
                     {
                         products && products.map(product => (
-                            <Products product={product} />
+                            <Products key={product._id} product={product} />
                         ))
                     }
                 </div>
             </div>
             <DiscriprionDrawer isOpen={true}/>
-
         </div>
     )
 }

@@ -3,15 +3,15 @@ import './sign-up.css'
 import axios from 'axios'
 import { useForm } from "react-hook-form";
 import registerOptions from "./sign-up-validations";
-import { useHistory } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 
 const Register = () => {
-    const history = useHistory();
+    const navigate = useNavigate();
     const { register, handleSubmit, formState: { errors } } = useForm();
 
     const handleFormSubmit = (data) => {
             axios.post('http://localhost:3000/users/adduser', data)
-                .then(res => history.push('/'))
+                .then(res => navigate('/'))
                 .catch(e => alert('Invalid details'))
         }
     return (

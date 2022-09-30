@@ -67,9 +67,9 @@ const MyDrawer = () => {
                             <h5><b>Quantity: </b></h5>
                         </div>
                         <div className="d-flex flex-row ms-3">
-                            <button class="btn btn-primary fw-bold" onClick={() => dispatch(increment())}>+</button>
+                            <button className="btn btn-primary fw-bold" onClick={() => dispatch(increment())}>+</button>
                             <div className="ms-3 me-3"><h4>{ quantity }</h4></div>
-                            <button class="btn btn-primary fw-bold" onClick={() => dispatch(decrement())}>-</button>
+                            <button className="btn btn-primary fw-bold" onClick={() => dispatch(decrement())}>-</button>
                         </div>
                     </div>
 

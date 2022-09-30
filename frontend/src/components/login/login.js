@@ -1,19 +1,26 @@
 import React, { useState, useEffect } from "react"
 import './login.css'
 import axios from "axios"
-import { useHistory } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import { useForm } from "react-hook-form";
 import loginOptions from "./login-validations";
 
 const Login = () => {
-    const history = useHistory();
+    const navigate = useNavigate();
     const { register, handleSubmit, formState: { errors } } = useForm();
-    const handleRegistration = (data) => {
+    const handleRegistration = async (data) => {
         console.log('data', data);
+        // let result = await  axios.post("http://localhost:3000/users/login", data);
+        // console.log(result)
+        // if (result){
+        //     navigate('/home')
+        // } else {
+        // console.log("error")
+        // }
+       
         axios.post("http://localhost:3000/users/login", data)
-            .then(res => history.push('/home'))
-            .catch(e => alert('invalid details'))
-
+            .then(res => navigate('/home'))
+            .catch(e => alert('Invalid Email or Pasword'))
     }
     return (
         <div className='center d-flex justify-content-center align-items-center'>

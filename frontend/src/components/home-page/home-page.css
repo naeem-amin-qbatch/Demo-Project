@@ -1,7 +1,9 @@
 .image {
     margin: 0;
     padding: 0;
-    clip-path: polygon(0 0, 100% 0, 100% 75%, 0% 100%);
+}
+.img-tag{
+    height: 1000px;
 }
 
 .heading {
@@ -9,9 +11,9 @@
     height: 100px;
     background: rgb(0, 0, 0, .6);
     position: absolute;
-    top: 60%;
+    top: 35%;
     left: 50%;
-    transform: translate(-50%, -60%);
+    transform: translate(-50%, -40%);
 }
 
 hr {
