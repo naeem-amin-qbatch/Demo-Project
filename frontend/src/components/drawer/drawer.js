@@ -7,13 +7,16 @@ import { useSelector, useDispatch } from 'react-redux';
 import './drawer.css'
 import axios from "axios";
 import { setProductId } from "../../redux/cart-slice";
-import { addToCart, decrement, increment } from '../../redux/cart-slice';
+import { addToCart,} from '../../redux/cart-slice';
 
-const MyDrawer = () => {
+
+const MyDrawer = (data) => {
     const dispatch = useDispatch();
+    const { isOpen , userId} = data
+    console.log(isOpen,userId)
     const { productId } = useSelector(state => state.cart);
     const { quantity } = useSelector((state) => state.cart);
-
+    let [num, setNum]= useState(0);
     const [product, setProduct] = useState([]);
 
     useEffect(() => {
@@ -32,10 +35,26 @@ const MyDrawer = () => {
             console.log(e)
         }
     }
-
-    const handleCartClick = (product) => {
-        dispatch(addToCart(product))
+    const handleCartClick = (product,userId,quantity) => {
+        dispatch(addToCart({ product, userId,quantity }))
     }
+
+  let incNum =()=>{
+    setNum(num+1);
+ 
+  }
+  let decNum = () => {
+     if(num>0)
+     {
+      setNum(num - 1);
+  
+     }
+  }
+
+ let handleChangeQuantity = (e)=>{
+   setNum(e.target.value);
+
+  }
 
     return (
         <div>
@@ -52,7 +71,7 @@ const MyDrawer = () => {
                     </div>
                     <div className="text-black mt-2">
                         <h2>Price: {product.price} Rs</h2>
-                        <ReactStars />
+                        <ReactStars value={product.rating} isHalf={true}/>
                         <div className="d-flex justify-content-between align-items-center me-5 mt-1">
                             <p><b>Brand:</b> {product.brand}</p>
                             <p><b>Category:</b> {product.category}</p>
@@ -67,16 +86,18 @@ const MyDrawer = () => {
                             <h5><b>Quantity: </b></h5>
                         </div>
                         <div className="d-flex flex-row ms-3">
-                            <button className="btn btn-primary fw-bold" onClick={() => dispatch(increment())}>+</button>
-                            <div className="ms-3 me-3"><h4>{ quantity }</h4></div>
-                            <button className="btn btn-primary fw-bold" onClick={() => dispatch(decrement())}>-</button>
+                            <button className="btn btn-primary fw-bold me-2" onClick={decNum}>-</button>
+                            {/* <div className="ms-3 me-3" value={num} onChange={handleChangeQuantity}><h4>{ quantity }</h4></div> */}
+                            <input type="text" className="form-control text-center" value={num} style={{width: "50px"}} onChange={handleChangeQuantity}/>
+                            <button className="btn btn-primary fw-bold ms-2" onClick={incNum}>+</button>
                         </div>
                     </div>
 
                     <div className="d-grid gap-2 mb-2">
                         <button className="btn btn-primary fw-bold" onClick={(e) => {
                             e.stopPropagation();
-                            handleCartClick(product)
+                            let quantity = num;
+                            handleCartClick(product,userId,quantity)
                         }}>Add To Cart</button>
                     </div>
                 </div>

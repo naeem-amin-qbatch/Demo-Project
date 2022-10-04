@@ -1,11 +1,6 @@
-  /* //////////////////////////////////// */
   .arrow {
     color: #0D6EFD;
   }
-
-  /* .sidebar-header{
-     background-color: 	#0D6EFD;
-     } */
   .sidebar-content {
     overflow: scroll;
   }
@@ -36,10 +31,4 @@
   overflow: scroll;
 
 
-  }
-
-  @media only screen and (max-width: 720px) {
-    html {
-      overflow: hidden;
-    }
   }

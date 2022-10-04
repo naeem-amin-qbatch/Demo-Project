@@ -2,19 +2,25 @@ import React, { useState } from "react";
 import NavBar from "../navbar/navbar";
 import './cart.css'
 import pic from '../images/cart-bg.png'
-import { useSelector } from "react-redux"
+import { useSelector, useDispatch } from "react-redux"
 import { FaTrashAlt } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import Footer from "../footer/footer"
+import { decrement, increment, showCart } from '../../redux/cart-slice';
 
 
 const Cart = () => {
+    let location = useLocation();
+    const dispatch = useDispatch();
+    console.log("location: ", location)
+    const { userId } = location.state
+    dispatch(showCart(userId));
     const { cart } = useSelector(item => item.cart)
-    console.log("cart: ", cart)
-    const [value, setValue] = useState();
+    const { quantity } = useSelector((state) => state.cart);
 
     return (
         <>
-            {/* <NavBar /> */}
+            <NavBar />
             <div className="container-fluid text-white p-0">
                 <div className="cart-img d-flex justify-content-center align-items-center">
                     <img src={pic} className="img-fluid w-100" alt="" />
@@ -23,6 +29,7 @@ const Cart = () => {
                     </div>
                 </div>
             </div>
+
             <div className="d-flex justify-content-center fw-bold fs-1 mt-2">Your Cart</div>
             <div className="container mt-5">
 
@@ -47,7 +54,9 @@ const Cart = () => {
                             <div className="col-style col-2">{item.name}</div>
                             <div className="col-style col-2">{item.price}</div>
                             <div className="col-style col-2 quantity">
-                                <input type="number" name='number' value={value} min="0" max="1000" step="1" onChange={(e) => setValue(e.target.value)} />
+                                <button className="btn btn-primary fw-bold" onClick={() => dispatch(increment())}>+</button>
+                                <div className="ms-3 me-3"><h4>{quantity}</h4></div>
+                                <button className="btn btn-primary fw-bold" onClick={() => dispatch(decrement())}>-</button>
                             </div>
                             <div className="col-style col-1">Subtotal</div>
                             <div className="col-style col-1"><Link className="text-danger"><FaTrashAlt /> </Link></div>
@@ -69,6 +78,7 @@ const Cart = () => {
                     </div>
                 </div>
             </div>
+            <Footer />
         </>
     )
 }

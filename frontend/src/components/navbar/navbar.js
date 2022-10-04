@@ -1,9 +1,9 @@
 import React from "react"
 import {FaCartPlus} from "react-icons/fa"
 import { Link } from "react-router-dom"
-import {Outlet} from "react-router-dom"
 
-const NavBar = () => {
+const NavBar = (data) => {
+const { userId } = data;
 
     return (
         <>
@@ -16,18 +16,21 @@ const NavBar = () => {
           </button>
           <div className="collapse navbar-collapse  justify-content-end me-4" id="navbarNav">
             <ul className="navbar-nav ">
-              <li className="nav-item me-2" >
-               <Link to={'/cart'}><FaCartPlus style={{color:"white", fontSize:"30px"}}/></Link>
+            <li className="nav-item">
+                <a className="nav-link text-white fw-bold" href="/home">Home</a>
               </li>
               <li className="nav-item">
-                <a className="nav-link text-white fw-bold" href="#">Log out</a>
+                <a className="nav-link text-white fw-bold me-3" href="/">Log in</a>
               </li>
+              <li className="nav-item me-2" >
+               <Link to={'/cart'} state={{"userId":userId}}><FaCartPlus style={{color:"white", fontSize:"30px"}}/></Link>
+              </li>
+            
           
             </ul>
           </div>
         </div>
       </nav>
-      <Outlet/>
       </>
     )
 }

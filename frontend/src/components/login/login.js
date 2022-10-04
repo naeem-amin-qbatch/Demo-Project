@@ -8,18 +8,13 @@ import loginOptions from "./login-validations";
 const Login = () => {
     const navigate = useNavigate();
     const { register, handleSubmit, formState: { errors } } = useForm();
-    const handleRegistration = async (data) => {
-        console.log('data', data);
-        // let result = await  axios.post("http://localhost:3000/users/login", data);
-        // console.log(result)
-        // if (result){
-        //     navigate('/home')
-        // } else {
-        // console.log("error")
-        // }
-       
+    
+    const handleRegistration = async (data) => {       
         axios.post("http://localhost:3000/users/login", data)
-            .then(res => navigate('/home'))
+            .then(res => {
+                const u_id = res.data._id
+                navigate('/home',{state: {userId: u_id}});
+            })
             .catch(e => alert('Invalid Email or Pasword'))
     }
     return (
