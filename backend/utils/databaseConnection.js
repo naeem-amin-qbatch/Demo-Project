@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import { connect } from 'mongoose';
 
 const url = "mongodb+srv://Naeem:MongoDB123@cluster0.ksn0zz5.mongodb.net/DemoProjectDatabase?retryWrites=true&w=majority";
 // const client = new MongoClient(url);
@@ -6,7 +6,7 @@ const url = "mongodb+srv://Naeem:MongoDB123@cluster0.ksn0zz5.mongodb.net/DemoPro
 const connectDB = async () => {
     try {
         console.log('try block')
-        await mongoose.connect(url);
+        await connect(url);
         console.log("Connected correctly to server");
 
     } catch (err) {
@@ -16,4 +16,4 @@ const connectDB = async () => {
 }
 
 connectDB().catch(console.dir);
-module.exports = connectDB;
+export default connectDB;

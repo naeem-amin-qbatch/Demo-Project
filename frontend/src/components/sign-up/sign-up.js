@@ -1,18 +1,25 @@
 import React from "react"
 import './sign-up.css'
-import axios from 'axios'
 import { useForm } from "react-hook-form";
 import registerOptions from "./sign-up-validations";
 import { useNavigate } from "react-router-dom"
+import { userSignUp } from "../../redux/user-slice";
+import { useDispatch } from "react-redux";
 
 const Register = () => {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const { register, handleSubmit, formState: { errors } } = useForm();
 
     const handleFormSubmit = (data) => {
-            axios.post('http://localhost:3000/users/adduser', data)
-                .then(res => navigate('/'))
-                .catch(e => alert('Invalid details'))
+            try {
+                const response = dispatch(userSignUp(data));
+                console.log('user signup dispatch response.data: ', response.data)
+                navigate('/');
+    
+            } catch (err) {
+                console.log('Error occured in user signup dispatch: ', err)
+            }
         }
     return (
         <div className='center-signup d-flex justify-content-center align-items-center'>

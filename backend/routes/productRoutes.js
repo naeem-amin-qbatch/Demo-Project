@@ -1,42 +1,40 @@
-const productsData = require('../data/products')
-const Product = require('../schema/productSchema')
-const express = require("express");
-const app = express.Router();
-const asyncHandler = require('express-async-handler')
+import productsData from '../data/products.js';
+import { Router } from "express";
+const app = Router();
+import Product from '../Schema/productSchema.js'
 
 
 // Insert Products into database
 app.post("/insert", async (req, res) => {
-  const data = await Product.insertMany(productsData);
-  if (data)
+  try {
+    const data = await Product.insertMany(productsData);
+    console.log('insert products: ', data)
     res.send(data);
-  else {
-    res.status(404)
-    throw new Error('Products Not Inserted')
+  } catch (e) {
+    res.status(404).send(e)
   }
 });
 
 // Get all Products from database
-app.get("/all", asyncHandler(async (req, res) => {
-  const allProducts = await Product.find({});
-
-  if (allProducts)
+app.get("/all", async (req, res) => {
+  try {
+    const allProducts = await Product.find({});
+    console.log('allProducts: ', allProducts)
     res.send(allProducts);
-  else {
-    res.status(404)
-    throw new Error('Products Not Found')
+  } catch (e) {
+    res.status(404).send(e)
   }
-}))
+})
 
 // Get Products by ID
-app.get('/:id', asyncHandler(async (req, res) => {
-  const data = await Product.findById(req.params.id);
-  if (data) {
+app.get('/:id', async (req, res) => {
+  try {
+    const data = await Product.findById(req.params.id);
+    console.log('Product by id: ', data)
     res.send(data);
-  } else {
-    res.status(404);
-    throw new Error("Product Not Found");
+  } catch (e) {
+    res.status(404).send(e)
   }
-}))
+})
 
-module.exports = app;
+export default app;

@@ -1,15 +1,16 @@
-require("dotenv").config();
+import dotenv from 'dotenv'
+dotenv.config()
 const { PORT } = process.env;
-const express = require("express");
-const cors = require('cors');
+import express, { json, urlencoded } from "express";
+import cors from 'cors';
 const app = express();
 app.use(cors());
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-const connectDB = require('./utils/databaseConnection')
-const productRoute = require('./routes/productRoutes')
-const userRoute = require('./routes/userRoutes')
-const cartRoute = require('./routes/cartRoutes')
+app.use(json());
+app.use(urlencoded({ extended: true }));
+import connectDB from './utils/databaseConnection.js';
+import productRoute from './routes/productRoutes.js';
+import userRoute from './routes/userRoutes.js';
+import cartRoute from './routes/cartRoutes.js';
 
 app.get('/', function (req, res) {
   res.send('Hello World');

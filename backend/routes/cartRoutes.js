@@ -1,15 +1,13 @@
-const Cart = require('../schema/cartSchema')
-const express = require("express");
-const app = express.Router();
-const Product = require('../schema/productSchema');
-const mongoose = require('mongoose');
+import { Types } from 'mongoose';
+import Cart from "../Schema/cartSchema.js"
+import { Router } from "express";
+const app = Router();
 
-
-app.post("/add-to-cart", async (req, res) => {
+app.post("/add-to-cart", async(req, res) => {
   const user_id = req.body.userId;
   const products = req.body.products.map(
     (objValue) => {
-      objValue.product = mongoose.Types.ObjectId(objValue.product);
+      objValue.product = Types.ObjectId(objValue.product);
       return objValue;
     }
   )
@@ -69,4 +67,4 @@ app.get('/getcart/:id', async (req, res) => {
   }
 })
 
-module.exports = app;
+export default app;

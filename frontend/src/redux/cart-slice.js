@@ -27,12 +27,14 @@ const cartSlice = createSlice(
                     .then(res => { console.log("addTocart res: ", res) })
                     .catch(e => { console.log("error: ", e) })
                 console.log("data in addtocart after api call: ", data)
+                return data;
             },
             async showCart(state, action) {
                 const user_id = action.payload;
                 console.log('userid in showcart', user_id)
                 let { data }  = await axios.get(`http://localhost:3000/cart/getcart/${user_id}`)
                 console.log(data);
+                return data;
                 
             
             },

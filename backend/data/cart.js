@@ -9,4 +9,4 @@ const cart = [
     },
 ]
 
-module.exports = cart;
+export default cart;

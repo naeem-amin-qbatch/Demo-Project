@@ -8,11 +8,16 @@ import './drawer.css'
 import axios from "axios";
 import { setProductId } from "../../redux/cart-slice";
 import { addToCart,} from '../../redux/cart-slice';
-
+// import {  useParams } from 'react-router-dom';
 
 const MyDrawer = (data) => {
+    // const { id : userId} = useParams();
+    // console.log(useParams)
+    // console.log(params)
+    // let userId = location.state.userId
+    // console.log('userId in drawer from params',userId)
     const dispatch = useDispatch();
-    const { isOpen , userId} = data
+    const { isOpen, userId} = data
     console.log(isOpen,userId)
     const { productId } = useSelector(state => state.cart);
     const { quantity } = useSelector((state) => state.cart);

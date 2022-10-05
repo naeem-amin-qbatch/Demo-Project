@@ -1,5 +1,5 @@
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcryptjs');
+import jwt from 'jsonwebtoken';
+import bcrypt from 'bcryptjs';
 
 const users = [
   {
@@ -10,4 +10,4 @@ const users = [
   },
 ]
 
-module.exports = users
+export default users

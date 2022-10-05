@@ -2,31 +2,29 @@ import React from "react";
 import NavBar from "../navbar/navbar";
 import Products from "../product/products";
 import DiscriprionDrawer from '../drawer/drawer';
-import axios from "axios";
 import { useState, useEffect } from "react";
 import './home-page.css';
 import pic from '../images/home-bg.png';
 import Footer from "../footer/footer";
-import { useLocation } from "react-router-dom";
-
+import { getAllProducts } from "../../redux/product-slice";
+import { useDispatch } from "react-redux";
 
 const HomePage = () => {
-    const { state } = useLocation();
-    const { userId } = state;
-    console.log("user id from login: ", userId)
-    const [products, setProducts] = useState([]);
-    const allProducts = async () => {
-        let { data } = await axios.get('http://localhost:3000/products/all')
-        const products = data;
-        setProducts(products);
-    }
+    const dispatch = useDispatch();
+    let [allProducts, setAllProducts] = useState([]);
     useEffect(() => {
-        allProducts();
-    }, []);
+        dispatch(getAllProducts()).then((response) => {
+            allProducts = response.payload;
+            console.log('products: ',allProducts);
+            setAllProducts(allProducts);
+        })
+    },[])
+ 
 
     return (
         <div >
-            <NavBar userId={userId} />
+            {/* <NavBar userId={userId} /> */}
+            <NavBar />
             <div className="container-fluid image text-white">
                 <img src={pic} className="img-fluid img-tag w-100" alt="" />
                 <div className="carousel-caption heading d-flex justify-content-center align-items-center">
@@ -38,15 +36,13 @@ const HomePage = () => {
                 <hr />
                 <div className="container d-flex mt-2 flex-wrap justify-content-center">
                     {
-                        products && products.map(product => (
-                            <Products key={product._id} product={product} userId={userId} />
+                        allProducts && allProducts.map(product => (
+                            <Products key={product._id} product={product} />
                         ))
                     }
                 </div>
             </div>
-            <DiscriprionDrawer isOpen={true} userId={userId} />
-
-
+            <DiscriprionDrawer isOpen={true} />
             <Footer />
         </div>
     )

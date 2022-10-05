@@ -3,15 +3,19 @@ import ReactStars from "react-rating-stars-component";
 import './products.css'
 import { useDispatch } from "react-redux";
 import { addToCart, setProductId } from "../../redux/cart-slice";
+import { Link } from "react-router-dom";
 
-const Products = ({ product, userId }) => {
+
+const Products = ({ product }) => {
     const dispatch = useDispatch();
 
-    const handleCartClick = (product,userId) => {
+    const handleCartClick = (product) => {
         console.log("product: ",product)
-        console.log("userId: ",userId)
+        // console.log("userId in product link: ",userId)
 
-        dispatch(addToCart({product,userId}))
+        // dispatch(addToCart({product,userId}))
+        dispatch(addToCart({product}))
+
     }
 
     return (
@@ -35,7 +39,9 @@ const Products = ({ product, userId }) => {
                     <div className="text-center">
                         <a className="btn btn-primary mt-2" onClick={(e) => {
                             e.stopPropagation();
-                            handleCartClick(product,userId)
+                            // handleCartClick(product,userId)
+                            handleCartClick(product)
+
                         }}>Add to Cart</a>
                     </div>
                 </div>

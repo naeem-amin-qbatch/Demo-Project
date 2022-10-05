@@ -1,13 +1,15 @@
-require("dotenv").config();
+// require("dotenv").config();
+import dotenv from 'dotenv'
+import User from '../schema/userSchema.js';
+import Auth from '../middlewares/jwt_auth.js';
+import jet from 'jsonwebtoken';
+import { Router } from "express";
+import pkg from 'bcryptjs';
+const { hash, compare } = pkg;
+const app = Router();
+const { sign } = jet;
 const { TOKEN_KEY } = process.env;
-const userData = require('../data/user');
-const User = require('../schema/userSchema');
-const express = require("express");
-const bcrypt = require('bcryptjs');
-const app = express.Router();
-const asyncHandler = require('express-async-handler');
-const jwt = require('jsonwebtoken');
-const Auth = require('../middlewares/jwt_auth')
+dotenv.config()
 
 // Insert users into database
 app.post("/adduser", async (req, res) => {
@@ -16,7 +18,7 @@ app.post("/adduser", async (req, res) => {
     if (foundUser) {
         res.send({ message: 'User Already Exist' })
     } else {
-        const hashedPassword = await bcrypt.hash(password.toString(), 10);
+        const hashedPassword = await hash(password.toString(), 10);
         const user = new User({
             name,
             email,
@@ -44,9 +46,9 @@ app.post('/login', async (req, res) => {
         // Validate if user exist in our database
         const user = await User.findOne({ email });
         console.log('user from DB', user);
-        if (user && await (bcrypt.compare(password, user.password))) {
+        if (user && await (compare(password, user.password))) {
             // Create token
-            const token = jwt.sign(
+            const token = sign(
                 { user_id: user._id, email },
                 TOKEN_KEY,
                 {
@@ -71,25 +73,28 @@ app.post('/getuser', Auth, async (req, res) => {
 
 // get all users
 app.get('/all', async (req, res) => {
-    const data = await User.find({})
-    if (data) {
+    try {
+        const data = await User.find({})
         console.log(data);
         res.send(data)
-    } else {
+
+    } catch(e) {
+        console.log(e)
         res.status(404)
-        throw new Error('Users Not Found')
     }
 })
 
 
 // Get Users by ID
-app.get('/:id', Auth, asyncHandler(async (req, res) => {
+app.get('/:id', Auth, async (req, res) => {
+    try {
     const data = await User.findById(req.params.id);
-    if (data) {
-        res.send(data);
-    } else {
-        res.status(404);
-        throw new Error("Product Not Found");
+    console.log(data)
+    res.send(data);
+
+    } catch(e) {
+        console.log(e)
+        res.status(404)
     }
-}))
-module.exports = app;
+})
+export default app;
