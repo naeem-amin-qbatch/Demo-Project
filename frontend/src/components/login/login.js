@@ -4,7 +4,7 @@ import axios from "axios"
 import { useNavigate } from "react-router-dom"
 import { useForm } from "react-hook-form";
 import loginOptions from "./login-validations";
-import { userLogin } from "../../redux/user-slice";
+import { userLogin } from "../../redux/slices/user";
 import { useDispatch } from "react-redux";
 
 const Login = () => {

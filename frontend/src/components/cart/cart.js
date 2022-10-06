@@ -1,22 +1,28 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import NavBar from "../navbar/navbar";
-import './cart.css'
 import pic from '../images/cart-bg.png'
 import { useSelector, useDispatch } from "react-redux"
 import { FaTrashAlt } from "react-icons/fa";
 import { Link, useLocation } from "react-router-dom";
 import Footer from "../footer/footer"
-import { decrement, increment, showCart } from '../../redux/cart-slice';
+import { decrement, increment, showCart } from '../../redux/slices/cart';
+import './cart.css'
 
 
 const Cart = () => {
     let location = useLocation();
     const dispatch = useDispatch();
-    console.log("location: ", location)
-    const { userId } = location.state
-    dispatch(showCart(userId));
-    const { cart } = useSelector(item => item.cart)
-    const { quantity } = useSelector((state) => state.cart);
+    const { userId: user_id } = useSelector((state) => state.user);
+    console.log('userId in cart page: ', user_id)
+    let showCartData = "";
+    useEffect(() => {
+        dispatch(showCart(user_id))
+        .then((response) => {
+            console.log(response)
+            showCartData = response.payload.products;
+            console.log('showCartData in cart page: ', showCartData)
+        })
+    }, [])
 
     return (
         <>
@@ -45,7 +51,7 @@ const Cart = () => {
                     <hr className="hrCart" />
                 </div>
 
-                {cart?.map((item) => (
+                {showCartData.map((item) => (
                     <div className="row">
                         <div className="d-flex justify-content-between">
                             <div className="col-style col-2 mt-2 mb-2">
@@ -55,7 +61,7 @@ const Cart = () => {
                             <div className="col-style col-2">{item.price}</div>
                             <div className="col-style col-2 quantity">
                                 <button className="btn btn-primary fw-bold" onClick={() => dispatch(increment())}>+</button>
-                                <div className="ms-3 me-3"><h4>{quantity}</h4></div>
+                                <div className="ms-3 me-3"><h4>{item.quantity}</h4></div>
                                 <button className="btn btn-primary fw-bold" onClick={() => dispatch(decrement())}>-</button>
                             </div>
                             <div className="col-style col-1">Subtotal</div>

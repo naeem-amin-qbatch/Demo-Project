@@ -3,7 +3,7 @@ import './sign-up.css'
 import { useForm } from "react-hook-form";
 import registerOptions from "./sign-up-validations";
 import { useNavigate } from "react-router-dom"
-import { userSignUp } from "../../redux/user-slice";
+import { userSignUp } from "../../redux/slices/user";
 import { useDispatch } from "react-redux";
 
 const Register = () => {
@@ -31,10 +31,10 @@ const Register = () => {
                 <div className="mb-3">
                     <label htmlFor="nameInput">Name</label>
                     <input type="text"
-                     name="name" {...register('name', registerOptions.name)}
-                     className="form-control"
-                      id="inputName" 
-                      placeholder="Please Enter Your Name" />
+                        name="name" {...register('name', registerOptions.name)}
+                        className="form-control"
+                        id="inputName" 
+                        placeholder="Please Enter Your Name" />
                     <small className="text-danger">
                         {errors.name?.type === "required" && (
                             <span>Name is required</span>

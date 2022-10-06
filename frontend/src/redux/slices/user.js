@@ -3,21 +3,24 @@ import axios from "axios";
 
 export const userLogin = createAsyncThunk(
     "/user/login",
-    async (data,thunkAPI) => {
+    async (data,{rejectWithValue}) => {
         try  {
             console.log('data in user login in thunk ',data)
             const response = await axios.post("http://localhost:3000/users/login", data)
-            console.log('user login response: ',response)
+            // console.log('user login response: ',response.data._id)
+            // state.userId = response.data._id
+            // console.log('user login response: ',state.userId)
+
             console.log('user login response.data: ',response.data)
             return response.data;
         } catch (err) {
             if (err.response && err.response.data) {
-                return thunkAPI.rejectWithValue({
+                return rejectWithValue({
                     err: err.response.data,
                     status: err.response.status,
                 });
             } else {
-                return thunkAPI.rejectWithValue({
+                return rejectWithValue({
                     err: "Network Error",
                 });
             }
@@ -27,7 +30,7 @@ export const userLogin = createAsyncThunk(
 
 export const userSignUp = createAsyncThunk(
     "/user/signup",
-    async (data,thunkAPI) => {
+    async (data,{rejectWithValue}) => {
         try  {
             console.log('data in user sign up in thunk ',data)
             const response = await axios.post('http://localhost:3000/users/adduser', data)
@@ -36,12 +39,12 @@ export const userSignUp = createAsyncThunk(
             return response.data;
         } catch (err) {
             if (err.response && err.response.data) {
-                return thunkAPI.rejectWithValue({
+                return rejectWithValue({
                     err: err.response.data,
                     status: err.response.status,
                 });
             } else {
-                return thunkAPI.rejectWithValue({
+                return rejectWithValue({
                     err: "Network Error",
                 });
             }
@@ -57,6 +60,8 @@ const user = createSlice({
     initialState: {
     loading:false,
     err:"",
+    userId:"",
+    message:"",
     },
     reducers: {},
     extraReducers: {
@@ -67,11 +72,11 @@ const user = createSlice({
             };
         },
         [userLogin.fulfilled]: (state, action) => {
-            return (
-                console.log('userLogin.fulfilled',action.payload),
-                // state.loginData.push(action.payload),
-                action.payload
-            )
+            return {
+                ...state,
+                userId: action.payload._id,
+                message: action.payload,
+            }
         },
         [userLogin.rejected]: (state, action) => {
             return {
@@ -88,7 +93,7 @@ const user = createSlice({
         },
         [userSignUp.fulfilled]: (state, action) => {
             return (
-                console.log('userLogin.fulfilled',action.payload),
+                console.log('userSignup.fulfilled',action.payload),
                 // state.loginData.push(action.payload),
                 action.payload
             )

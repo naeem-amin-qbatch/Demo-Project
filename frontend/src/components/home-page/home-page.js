@@ -6,7 +6,7 @@ import { useState, useEffect } from "react";
 import './home-page.css';
 import pic from '../images/home-bg.png';
 import Footer from "../footer/footer";
-import { getAllProducts } from "../../redux/product-slice";
+import { getAllProducts } from "../../redux/slices/product";
 import { useDispatch } from "react-redux";
 
 const HomePage = () => {
@@ -14,12 +14,12 @@ const HomePage = () => {
     let [allProducts, setAllProducts] = useState([]);
     useEffect(() => {
         dispatch(getAllProducts()).then((response) => {
+            console.log(response)
             allProducts = response.payload;
-            console.log('products: ',allProducts);
+            
             setAllProducts(allProducts);
         })
-    },[])
- 
+    }, [])
 
     return (
         <div >

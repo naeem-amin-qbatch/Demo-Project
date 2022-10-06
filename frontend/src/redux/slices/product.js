@@ -3,27 +3,24 @@ import axios from "axios";
 
 export const getAllProducts = createAsyncThunk(
     "/products/getAllProducts",
-    async (thunkAPI) => {
+    async (_, {rejectWithValue}) => {
         try {
             const response = await axios.get('http://localhost:3000/products/all')
-            console.log('all products response: ',response)
-            console.log('all products response.data: ',response.data)
             return response.data;
         } catch (err) {
             if (err.response && err.response.data) {
-                return thunkAPI.rejectWithValue({
+                return rejectWithValue({
                     err: err.response.data,
                     status: err.response.status,
                 });
             } else {
-                return thunkAPI.rejectWithValue({
+                return rejectWithValue({
                     err: "Network Error",
                 });
             }
         }
     }
 );
-
 
 
 const products = createSlice({
@@ -59,6 +56,5 @@ const products = createSlice({
 
 const { reducer } = products;
 
-// export const { SetState, ClearState, logout } = actions;
 
 export default reducer;

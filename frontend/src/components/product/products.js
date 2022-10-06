@@ -1,25 +1,23 @@
 import React, { useState } from "react"
 import ReactStars from "react-rating-stars-component";
+import { useDispatch, useSelector } from "react-redux";
+import { addToCart, setProductId } from "../../redux/slices/cart";
 import './products.css'
-import { useDispatch } from "react-redux";
-import { addToCart, setProductId } from "../../redux/cart-slice";
-import { Link } from "react-router-dom";
+
 
 
 const Products = ({ product }) => {
     const dispatch = useDispatch();
+    const { userId: user_id} = useSelector((state) => state.user);
+    console.log('userId: ', user_id)
 
-    const handleCartClick = (product) => {
-        console.log("product: ",product)
-        // console.log("userId in product link: ",userId)
-
-        // dispatch(addToCart({product,userId}))
-        dispatch(addToCart({product}))
+    const handleCartClick = (product,user_id) => {
+        dispatch(addToCart({ product,user_id }))
 
     }
 
     return (
-        
+
         <div className="productCard" onClick={() => dispatch(setProductId(product._id))}>
             <div className="card divStyle" >
                 <img className="imgStyle" src={product.image} alt={product.name} />
@@ -39,14 +37,13 @@ const Products = ({ product }) => {
                     <div className="text-center">
                         <a className="btn btn-primary mt-2" onClick={(e) => {
                             e.stopPropagation();
-                            // handleCartClick(product,userId)
-                            handleCartClick(product)
+                            handleCartClick(product,user_id)
 
                         }}>Add to Cart</a>
                     </div>
                 </div>
             </div>
-            
+
         </div>
 
     )

@@ -1,17 +1,17 @@
-import productsData from '../data/products.js';
 import { Router } from "express";
+import Product from '../schema/product.js'
+import productsData from '../data/products.js';
 const app = Router();
-import Product from '../Schema/productSchema.js'
 
 
 // Insert Products into database
 app.post("/insert", async (req, res) => {
   try {
     const data = await Product.insertMany(productsData);
-    console.log('insert products: ', data)
-    res.send(data);
+    console.log('insert products: ',data)
+    return res.status(200).send(data);
   } catch (e) {
-    res.status(404).send(e)
+    return res.status(500).send(e)
   }
 });
 
@@ -19,10 +19,10 @@ app.post("/insert", async (req, res) => {
 app.get("/all", async (req, res) => {
   try {
     const allProducts = await Product.find({});
-    console.log('allProducts: ', allProducts)
-    res.send(allProducts);
+    // console.log('allProducts: ', allProducts)
+    return res.status(200).send(allProducts);
   } catch (e) {
-    res.status(404).send(e)
+    return res.status(500).send(e)
   }
 })
 
@@ -31,9 +31,9 @@ app.get('/:id', async (req, res) => {
   try {
     const data = await Product.findById(req.params.id);
     console.log('Product by id: ', data)
-    res.send(data);
+    return res.status(200).send(data);
   } catch (e) {
-    res.status(404).send(e)
+    return res.status(500).send(e)
   }
 })
 

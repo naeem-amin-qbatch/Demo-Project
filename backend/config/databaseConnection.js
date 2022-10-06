@@ -1,7 +1,6 @@
 import { connect } from 'mongoose';
 
 const url = "mongodb+srv://Naeem:MongoDB123@cluster0.ksn0zz5.mongodb.net/DemoProjectDatabase?retryWrites=true&w=majority";
-// const client = new MongoClient(url);
 
 const connectDB = async () => {
     try {

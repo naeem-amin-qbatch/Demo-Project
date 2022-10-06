@@ -6,8 +6,8 @@ import ReactStars from "react-rating-stars-component";
 import { useSelector, useDispatch } from 'react-redux';
 import './drawer.css'
 import axios from "axios";
-import { setProductId } from "../../redux/cart-slice";
-import { addToCart,} from '../../redux/cart-slice';
+import { setProductId } from "../../redux/slices/cart";
+import { addToCart,} from '../../redux/slices/cart';
 // import {  useParams } from 'react-router-dom';
 
 const MyDrawer = (data) => {
@@ -18,7 +18,7 @@ const MyDrawer = (data) => {
     // console.log('userId in drawer from params',userId)
     const dispatch = useDispatch();
     const { isOpen, userId} = data
-    console.log(isOpen,userId)
+    // console.log(isOpen,userId)
     const { productId } = useSelector(state => state.cart);
     const { quantity } = useSelector((state) => state.cart);
     let [num, setNum]= useState(0);
