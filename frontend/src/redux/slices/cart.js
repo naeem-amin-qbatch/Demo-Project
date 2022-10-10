@@ -1,83 +1,184 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
-
+import axios from "../../config/axios";
 
 export const addToCart = createAsyncThunk(
-    "/cart/addToCart",
-    async ({ product, user_id }, { rejectWithValue }) => {
-        try {
-            console.log('user_id in addtocart thunk', user_id)
-            console.log('product in addtocart thunk', product)
-            product = product._id;
-            console.log(" product = product._id: ", product)
-            const response = axios.post("http://localhost:3000/cart/add-to-cart", { user_id, product })
-            console.log("addtocart api response: ", response)
-            console.log('addtocart api response: response.data: ', response.data)
-            return response.data;
-        } catch (err) {
-            if (err.response && err.response.data) {
-                return rejectWithValue({
-                    err: err.response.data,
-                    status: err.response.status,
-                });
-            } else {
-                return rejectWithValue({
-                    err: "Network Error",
-                });
-            }
+  "/cart/addToCart",
+  async ({ product, user_id }, { rejectWithValue }) => {
+    if (product, user_id) {
+      try {
+        product = product._id;
+        const response = axios.post("/cart/add-to-cart", { user_id, product })
+        return response.data;
+      } catch (err) {
+        if (err.response && err.response.data) {
+          return rejectWithValue({
+            err: err.response.data,
+            status: err.response.status,
+          });
+        } else {
+          return rejectWithValue({
+            err: "Network Error",
+          });
         }
-    }
+      }
+    } else
+      alert('Parameters not found')
+  }
 );
 
 export const showCart = createAsyncThunk(
-    "/cart/showCart",
-    async (user_id, { rejectWithValue }) => {
-        try {
-            console.log('userid in showcart thunk', user_id)
-            let { data } = await axios.get(`http://localhost:3000/cart/${user_id}`)
-            console.log('data in showCart thunk: ',data);
-            return data;
+  "/cart/showCart",
+  async (user_id, { rejectWithValue }) => {
+    if (user_id) {
+      try {
+        let data = await axios.get(`/cart/${user_id}`)
+        return data;
 
-        } catch (err) {
-            if (err.response && err.response.data) {
-                return rejectWithValue({
-                    err: err.response.data,
-                    status: err.response.status,
-                });
-            } else {
-                return rejectWithValue({
-                    err: "Network Error",
-                });
-            }
+      } catch (err) {
+        if (err.response && err.response.data) {
+          return rejectWithValue({
+            err: err.response.data,
+            status: err.response.status,
+          });
+        } else {
+          return rejectWithValue({
+            err: "Network Error",
+          });
         }
-    }
+      }
+    } else
+      alert('Parameters not found')
+  }
 );
 
 
+export const updateQuantity = createAsyncThunk(
+  "/cart/updateQuantity",
+  async (cartInfo, { rejectWithValue }) => {
+    if (cartInfo) {
+      try {
+        const { data } = await axios.put(`/cart/updateCart`, cartInfo);
+        return data;
+      } catch (err) {
+        if (err.response && err.response.data) {
+          return rejectWithValue({
+            err: err.response.data,
+            status: err.response.status,
+          });
+        } else {
+          return rejectWithValue({
+            err: "Network Error",
+          });
+        }
+      }
+    } else
+      alert('Parameters not found')
+  }
+);
+
+export const removeCartProduct = createAsyncThunk(
+  "/cart/removeCartProduct",
+  async ({ p_id: product, user_id }, { rejectWithValue }) => {
+    if (product, user_id) {
+      try {
+        const { data } = await axios.put('/cart/removeCartProduct', { product, user_id });
+        return data;
+      } catch (err) {
+        if (err.response && err.response.data) {
+          return rejectWithValue({
+            err: err.response.data,
+            status: err.response.status,
+          });
+        } else {
+          return rejectWithValue({
+            err: "Network Error",
+          });
+        }
+      }
+    } else
+      alert('Parameters not found')
+  }
+);
+
+
+
 const initialState = {
-    cart: [],
-    productId: '',
-    cartData: []
+  cartUpdate: false,
+  cartRemove: false,
+  loading: false,
+  err: false,
 }
 const cart = createSlice(
-    {
-        name: 'cart',
-        initialState,
-        reducers: {},
-        setProductId(state, action) {
-            state.productId = action.payload;
-        },
-        increment(state) {
-            state.quantity += 1;
-        },
-        decrement(state) {
-            if (state.quantity <= 0)
-                state.quantity = 0;
-            else
-                state.quantity -= 1;
-        },
+  {
+    name: 'cart',
+    initialState,
+    reducers: {
+      setCartState(state, { payload: { field, value } }) {
+        state[field] = value;
+      },
     },
+    extraReducers: {
+      [addToCart.pending]: (state, action) => ({
+        ...state,
+        loading: true,
+      }),
+      [addToCart.fulfilled]: (state, action) => ({
+        ...state,
+        loading: false,
+      }),
+      [addToCart.rejected]: (state, action) => ({
+        ...state,
+        loading: false,
+        err: action.payload.err,
+      }),
+      [showCart.pending]: (state, action) => ({
+        ...state,
+        loading: true,
+      }),
+      [showCart.fulfilled]: (state, action) => ({
+        ...state,
+        loading: false,
+      }),
+      [showCart.rejected]: (state, action) => ({
+        ...state,
+        loading: false,
+        err: action.payload.err,
+      }),
+      [updateQuantity.pending]: (state, action) => ({
+        ...state,
+        loading: true,
+        cartUpdate: false
+      }),
+      [updateQuantity.fulfilled]: (state, action) => ({
+        ...state,
+        loading: false,
+        cartUpdate: true
+      }),
+      [updateQuantity.rejected]: (state, action) => ({
+        ...state,
+        loading: false,
+        cartUpdate: false,
+        err: action.payload.err,
+      }),
+      [removeCartProduct.pending]: (state, action) => ({
+        ...state,
+        loading: true,
+        cartRemove: false
+      }),
+      [removeCartProduct.fulfilled]: (state, action) => ({
+        ...state,
+        loading: false,
+        cartRemove: true
+      }),
+      [removeCartProduct.rejected]: (state, action) => ({
+        ...state,
+        loading: false,
+        cartRemove: false,
+        err: action.payload.err,
+      }),
+    },
+  },
 )
 
-export const { setProductId, increment, decrement } = cart.actions;
+export const { setCartState } = cart.actions;
 export default cart.reducer;

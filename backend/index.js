@@ -10,22 +10,13 @@ const app = express();
 app.use(cors());
 app.use(json());
 app.use(urlencoded({ extended: true }));
-const PORT = 3000;
-// const { PORT } = process.env;
-
-app.get('/', function (req, res) {
-  res.send('Hello World');
-})
+const { PORT } = process.env;
 
 ///////////// ROUTES  /////////////
-// Product Route
 app.use('/products',productRoute)
-// User Routes
 app.use('/users',userRoute)
-// Cart Routes
 app.use('/cart',cartRoute)
-// RUN APP
-app.listen(3000, async () => {
+app.listen(PORT, async () => {
     await connectDB();
     console.log('Server running on port 3000');
   })

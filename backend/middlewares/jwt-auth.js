@@ -4,9 +4,7 @@ dotenv.config()
 const { TOKEN_KEY } = process.env;
 
 const verifyToken = (req, res, next) => {
-  // console.log("req header auth:",req.headers.authorization)
   const token = req.headers.authorization.split(' ')[1];
-  console.log('my token is:', token)
   if (!token) {
     return res.status(500).send("A token is required for authentication");
   }

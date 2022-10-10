@@ -4,7 +4,6 @@ import { Link } from "react-router-dom"
 
 const NavBar = (data) => {
 const { userId } = data;
-
     return (
         <>
         <nav className="navbar navbar-expand-lg navbar-light bg-primary">
@@ -24,9 +23,7 @@ const { userId } = data;
               </li>
               <li className="nav-item me-2" >
                <Link to={'/cart'} state={{"userId":userId}}><FaCartPlus style={{color:"white", fontSize:"30px"}}/></Link>
-              </li>
-            
-          
+              </li>      
             </ul>
           </div>
         </div>
@@ -34,5 +31,4 @@ const { userId } = data;
       </>
     )
 }
-
 export default NavBar
