@@ -1,5 +1,5 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import NavBar from "../navbar/navbar";
 import Products from "../product/products";
@@ -8,6 +8,7 @@ import Footer from "../footer/footer";
 import { getAllProducts } from "../../redux/slices/product";
 import pic from '../../assests/images/home-bg.png';
 import './home-page.css';
+import { Outlet } from "react-router-dom";
 
 const HomePage = () => {
   const dispatch = useDispatch();
@@ -37,6 +38,7 @@ const HomePage = () => {
         </div>
       </div>
       <DiscriprionDrawer />
+      <Outlet/>
       <Footer />
     </div>
   )

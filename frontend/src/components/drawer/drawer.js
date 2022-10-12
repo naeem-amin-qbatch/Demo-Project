@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Drawer from 'react-modern-drawer'
-import { FaArrowAltCircleLeft } from 'react-icons/fa';
+import { FaArrowAltCircleLeft, FaUniregistry } from 'react-icons/fa';
 import ReactStars from "react-rating-stars-component";
 import { useSelector, useDispatch } from 'react-redux';
 import 'react-modern-drawer/dist/index.css';
@@ -35,6 +35,7 @@ const MyDrawer = () => {
     setNum(e.target.value);
   }
 
+
   return (
     <div>
       <Drawer
@@ -46,7 +47,7 @@ const MyDrawer = () => {
         <FaArrowAltCircleLeft className='mt-2 fs-4 ms-1 text-primary' onClick={() => dispatch(setProductId(''))} />
         <div className="container-fluid d-flex flex-column">
           <div className="d-flex flex-column justify-content-center align-items-center text-black">
-            <img className="w-75 h-50" src={product.image} alt='loading'/>
+            <img className="w-75 h-50" src={product.image} alt='loading' />
             <h1 className="mt-2">{product.name}</h1>
           </div>
           <div className="text-black mt-2">

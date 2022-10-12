@@ -15,8 +15,9 @@ function App() {
         <Route exact path='/' element={<Login />} />
         <Route path='/signup' element={<Register />} />
         <Route path='/navbar' element={<NavBar />} />
-        <Route path="/home" element={<HomePage />} />
-        <Route path='/details/:id' element={<MyDrawer />} />
+        <Route path="/home" element={<HomePage />} >
+          <Route path='product/:id' element={<MyDrawer />} />
+        </Route>
         <Route path='/cart' element={<Cart />} />
         <Route path='*' element={<PageNotFound />} />
       </Routes>

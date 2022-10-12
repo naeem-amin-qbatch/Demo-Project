@@ -51,7 +51,6 @@ export const showCart = createAsyncThunk(
   }
 );
 
-
 export const updateQuantity = createAsyncThunk(
   "/cart/updateQuantity",
   async (cartInfo, { rejectWithValue }) => {
@@ -116,6 +115,9 @@ const cart = createSlice(
       setCartState(state, { payload: { field, value } }) {
         state[field] = value;
       },
+      totalBill(user_id){
+
+      }
     },
     extraReducers: {
       [addToCart.pending]: (state, action) => ({

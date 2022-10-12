@@ -1,17 +1,20 @@
 import ReactStars from "react-rating-stars-component";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { setProductId } from "../../redux/slices/product";
 import { addToCart } from "../../redux/slices/cart";
 import './products.css'
 
 const Products = ({ product }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { userId: user_id } = useSelector((state) => state.user);
   const handleCartClick = (product, user_id) => {
     dispatch(addToCart({ product, user_id }))
   }
 
   const handleProductClick = (productId) => {
+    navigate(`product/${productId}`)
     dispatch(setProductId(productId));
   }
 

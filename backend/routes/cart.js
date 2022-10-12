@@ -79,7 +79,7 @@ app.get('/:id', async (req, res) => {
     });
     return res.status(200).send(finalCart)
   } catch (e) {
-    return res.status(404).send('userCart not found')
+    return res.status(404).send('Cart not found')
   }
 })
 
@@ -111,7 +111,7 @@ app.put('/updateCart', async (req, res) => {
     )
     return res.status(200).send('Cart Updated Succesfully')
   } catch (e) {
-    return res.status(404).send('userCart not found')
+    return res.status(404).send('Cart not found')
   }
 })
 
